@@ -45,24 +45,25 @@ public class SwiftSimplePedometerPlugin: NSObject, FlutterPlugin {
     }
 
     func getWalkingDuration(call: FlutterMethodCall) {
-        guard let arguments = call.arguments as? NSDictionary,
-              let startTime = arguments["startTime"] as? NSNumber,
-              let endTime = arguments["endTime"] as? NSNumber
-        else {
-            self.channelResult?(0)
-            return
-        }
-        
-        let dateFrom = Date(timeIntervalSince1970: startTime.doubleValue / 1000)
-        let dateTo = Date(timeIntervalSince1970: endTime.doubleValue / 1000)
-        
-        pedometer.queryPedometerData(from: dateFrom, to: dateTo, withHandler: { (data, error) in
-            if let data = data, error == nil {
-                let walkingDuration = data.walkingDuration?.doubleValue ?? 0
-                self.channelResult?(walkingDuration)
-            } else {
-                self.channelResult?(0)
-            }
-        })
+    guard let arguments = call.arguments as? NSDictionary,
+          let startTime = arguments["startTime"] as? NSNumber,
+          let endTime = arguments["endTime"] as? NSNumber
+    else {
+        self.channelResult?(0)
+        return
     }
+    
+    let dateFrom = Date(timeIntervalSince1970: startTime.doubleValue / 1000)
+    let dateTo = Date(timeIntervalSince1970: endTime.doubleValue / 1000)
+    
+    pedometer.queryPedometerData(from: dateFrom, to: dateTo) { (data, error) in
+        if let data = data, error == nil {
+            let walkingDuration = data.endDate.timeIntervalSince(data.startDate)
+            self.channelResult?(walkingDuration)
+        } else {
+            self.channelResult?(0)
+        }
+    }
+}
+
 }
