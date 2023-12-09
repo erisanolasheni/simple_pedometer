@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 class SimplePedometer {
   static const MethodChannel _channel = MethodChannel('simple_pedometer');
 
