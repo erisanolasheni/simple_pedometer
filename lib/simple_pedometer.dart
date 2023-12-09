@@ -25,20 +25,20 @@ class SimplePedometer {
     return res;
   }
 
-  static Future<double> getWalkingDuration({
+  static Future<int> getWalkingDuration({
     required DateTime from,
     required DateTime to,
   }) async {
     if (!Platform.isIOS) {
       assert(false, 'This plugin only supports iOS');
-      return 0.0;
+      return 0;
     }
     final args = <String, dynamic>{
       'startTime': from.millisecondsSinceEpoch,
       'endTime': to.millisecondsSinceEpoch,
     };
     final res =
-        await _channel.invokeMethod<double>('getWalkingDuration', args) ?? 0.0;
+        await _channel.invokeMethod<double>('getWalkingDuration', args) ?? 0;
     return res;
   }
 }
