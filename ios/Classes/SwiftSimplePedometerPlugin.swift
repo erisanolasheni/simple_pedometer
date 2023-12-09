@@ -58,7 +58,7 @@ public class SwiftSimplePedometerPlugin: NSObject, FlutterPlugin {
     
     pedometer.queryPedometerData(from: dateFrom, to: dateTo) { (data, error) in
         if let data = data, error == nil {
-            let walkingDuration = data.endDate.timeIntervalSince(data.startDate)
+            let walkingDuration = data.activeTime?.doubleValue ?? 0
             self.channelResult?(walkingDuration)
         } else {
             self.channelResult?(0)
