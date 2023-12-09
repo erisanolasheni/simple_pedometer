@@ -25,7 +25,7 @@ class SimplePedometer {
     return res;
   }
 
-  static Future<int> getWalkingDuration({
+  static Future<double> getWalkingDuration({
     required DateTime from,
     required DateTime to,
   }) async {
@@ -38,7 +38,7 @@ class SimplePedometer {
       'endTime': to.millisecondsSinceEpoch,
     };
     final res =
-        await _channel.invokeMethod<double>('getWalkingDuration', args) ?? 0;
+        await _channel.invokeMethod<double>('getWalkingDuration', args) ?? 0.0;
     return res;
   }
 }
